@@ -409,84 +409,59 @@ def get_dog_age(id: int):
 
 ---
 
-## **Exercise 8: Automated Review Checklists**
+## **Exercise 8: Pull Requests with GitHub MCP Server**
 
-**Overview**: Create workflows where Copilot systematically checks code against multiple dimensions.
+**Overview**: Set up and utilize GitHub MCP Server to enhance PR reviews with Copilot Chat.
+### Part A: Set Up GitHub MCP Server
+1. Go to the Extensions view in VS Code (Ctrl+Shift+X)
+2. Search for "@mcp GitHub" and install the extension
+3. Check under MCP Servers - Installed Servers to verify GitHub MCP Server is listed
+4. Click the Cog Icon and select Show Configuration (JSON).
+5. Verify that the following configuration is present:
+```json
+{
+	"servers": {
+		"github": {
+			"type": "http",
+			"url": "https://api.githubcopilot.com/mcp/"
+		}
+	},
+	"inputs": []
+}
+```
+6. Press the Start Server button to start the MCP server.
+7. Login with your GitHub credentials when prompted.
+8. Verify the server status shows "Running".
+9. Go to Agent mode in Copilot Chat, select configure tools, and verify that the GitHub MCP Server is listed under Available Tools and is checked.
+10. Restart VS Code to ensure all settings take effect.
+11. Make a sample Prompt: `Are there any PRs open in this repository?`
+12. Verify that Copilot Chat returns a list of open PRs.
 
-### Part A: Comprehensive Multi-Checklist Review
-1. Create a function that you intentionally make problematic
-2. Run it through multiple checklists:
-   ```
-   Review #selection against these guides:
-   - #file:.github/copilot-instructions.md
-   - #file:.github/code-review-checklist.md
-   - #file:.github/security-review-guide.md
-   - #file:.github/performance-review-guide.md
-   ```
-3. Collect all issues found
-4. Ask: `Prioritize these issues by severity`
-
-### Part B: Create a Master Review Command
-1. Create file: `.github/master-review-process.md`
-2. Add content:
-````markdown
-# Master Review Process
-
-When reviewing code, check in this order:
-
-1. **Functionality**: Does it work? Does it meet requirements?
-2. **Security**: Run through security-review-guide.md
-3. **Code Quality**: Check copilot-instructions.md compliance
-4. **Testing**: Verify code-review-checklist.md testing section
-5. **Performance**: Review using performance-review-guide.md
-6. **Documentation**: Check docstrings and API docs
-7. **Accessibility** (if frontend): Use accessibility-review-guide.md
-
-Generate a structured report with:
-- Summary of findings
-- Critical issues (must fix)
-- Suggestions (nice to have)
-- Positive observations
-````
-
-3. Test it: `Review #selection following the process in #file:.github/master-review-process.md`
-
-### Part C: Review Report Generation
-1. After running master review, prompt: `Generate a code review report in markdown format with sections for each review area`
-2. Review the generated report
-3. Save to file: `code-review-report.md`
-4. **Goal**: Generate consistent, thorough review reports
-
----
-
-## **Exercise 9: Team Collaboration & Review Feedback**
-
-**Overview**: Use Copilot to facilitate better communication during code review discussions.
-
-### Part A: Generating Constructive Feedback
-1. Find a code issue
-2. Instead of just identifying it, prompt: `Review #selection and provide constructive feedback that explains the issue, why it matters, and how to fix it`
-3. Compare:
-   - Direct: "Missing error handling"
-   - Constructive: "This route lacks error handling, which could cause the API to return 500 errors when the dog doesn't exist. Consider adding a try-except block or checking if the result is None before accessing attributes."
-4. **Goal**: Generate reviewer feedback that educates developers
-
-### Part B: Explaining Review Comments
-1. Simulate receiving review feedback: Create a comment like "This has an N+1 query problem"
-2. Prompt: `Explain what an N+1 query problem is and how to fix it in #selection`
-3. Use Copilot as a learning tool during reviews
-4. Ask: `Show me an example of how to fix this specific case`
-
-### Part C: Review Discussion Threads
-1. Start a simulated review discussion:
-   - You: `Why is error handling important in this route?`
-   - Copilot provides explanation
-   - You: `What's the best way to handle database errors here?`
-   - Copilot provides options
-   - You: `Which approach is most consistent with our codebase?`
-2. **Reflection**: How does conversational review improve understanding?
+### Part B: Creating a Pull Request Using MCP Server
+1. Ensure you're on the `feature/dog-age-api` branch with changes.
+   - If not, switch to it: `git switch feature/dog-age-api`
+2. Add files to staging: `git add .`
+3. Run the following command in terminal to get the git diff of your changes:
+   - `git diff --cached --stat > changes-summary.txt`
+   - `git diff --cached > changes-detailed.txt`
+4. Prompt in Ask: `Review the files #file:changes-summary.txt and #file:changes-detailed.txt to create a commit Title and Description that follows best practices in #file:.copilot-commit-message-instructions.md`
+**Note**: If .copilot-commit-message-instructions.md does not exist, create it in the root directory and add the content from copilot-commit-message-instructions.md.
+5. Go to Source Control in VS Code (Ctrl+Shift+G). Copy and paste the generated message in the Commit Message box.
+6. Commit & Push the changes.
+7. Run the following command in terminal to get the git diff of your changes:
+   `git diff main...feature/dog-age-api > pr-changes.diff`
+8. Prompt in Agent: `Generate a pull request title and description using the #file:pr-changes.diff and following the template in #file:pull-request-template.md`
+9. Prompt in Agent: `Create a pull request using the generated title and description`
+10. You maybe prompted to Allow MCP Server to create the PR on your behalf. Click Allow.
+11. Verify the PR is created by navigating to the GitHub repository in your web browser.
+12. Prompt in Agent: `List all the PRs in this repository and their current status`
+13. Verify that the newly created PR is listed with the correct status (e.g., Open).
+14. Prompt in Agent: `Provide a summary of the changes made in the PR titled "<your PR title>"`
+15. **Reflection:** How does using MCP Server streamline the PR creation and review process?
 
 ---
+
+
 
 ## **Exercise 10: End-to-End Review Workflow**
 
