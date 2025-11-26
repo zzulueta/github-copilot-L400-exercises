@@ -409,7 +409,16 @@ def get_dog_age(id: int):
 
 ---
 
-## **Exercise 8: Pull Requests with GitHub MCP Server**
+## **Exercise 8: Multi-Agent Code Reviewer**
+**Overview**: Combine multiple specialized review agents to conduct a holistic code review.
+1. Create a new agent: `master-reviewer`. Use the information from master-reviewer.agent.md.
+2. Open Copilot Chat in master-reviewer mode.
+3. Prompt: `Create a review.`
+4. The agent will autonomously use the different agents to generate an indvidual report and then combine them into a final report.
+5. Review each report.
+---
+
+## **Exercise 9: Pull Requests with GitHub MCP Server**
 
 **Overview**: Set up and utilize GitHub MCP Server to enhance PR reviews with Copilot Chat.
 ### Part A: Set Up GitHub MCP Server
