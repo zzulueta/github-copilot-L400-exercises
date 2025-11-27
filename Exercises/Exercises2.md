@@ -60,7 +60,6 @@ This comprehensive set of exercises guides you through mastering code review wor
 ---
 
 ## **Exercise 1: Foundation - Understanding Code Review Context**
-
 **Overview**: Before conducting reviews, understand how Copilot leverages context to provide meaningful feedback on code changes.
 
 ### Part A: Basic Code Review with Copilot Chat
@@ -169,12 +168,21 @@ This comprehensive set of exercises guides you through mastering code review wor
    ```
 2. Save report to: `workspace-review-report.md`
 
-### Part E: Performing Code Reviews on Uncommited Changes.
+### Part E: Performing Code Reviews on Uncommited Changes and Inline Review.
 1. Select Source Control in the Left Navigation Bar (Ctrl+Shift+G).
-2. Select Code Review - Uncommited Changes.
-3. Explore the different issues identified by Copilot.
+2. Select Code Review - Uncommited Changes (found in the Source Control panel).
+3. Navigate through the Code Review comments using the arrows in the top right of the Code Review panel.
 4. Do not accept any suggested changes yet.
-
+5. Highlight the whole route that the Code Review is focused on.
+6. Open a New Chat in Ask and prompt: `#selection Check for possible errors` 
+7. **Reflection**: How does inline review compare to chat-based review?
+Inline review focuses on the specific changes, while chat-based allows broader context.
+8. Open app.py and highlight the contents of the whole file.
+9. Right-click and select Generate Code -> Review.
+10. Click the down arrow in the top right of the Code Review panel to navigate through the comments.
+11. Compare the number of issues found in this approach vs the Code Review - Uncommited Changes approach.
+12. Open a New Chat in Ask and prompt: `#file:server/app.py Check for possible errors`
+13. **Reflection**: How does reviewing the whole file compare to the Chat Review approach?
 ---
 
 ## **Exercise 2: Creating Custom Review Standards**
@@ -281,11 +289,159 @@ This comprehensive set of exercises guides you through mastering code review wor
 4. Ask clarifying questions if needed: `Should the docstring include database query details?`
 5. **Goal**: Use Copilot as a style guide interpreter
 
+### **Part D: Simulating Reviewer-Developer Dialogue**
+**Scenario**: You're reviewing a colleague's code and need to provide constructive feedback that explains the reasoning, not just the issue.
+1. **Setup**: Open `server/app.py` and locate the `get_dog_breed` route
+2. **Act as Reviewer**: Create a New Chat in Ask and prompt:
+   ```
+   I'm reviewing this code #selection. As a senior developer reviewing a junior's code, 
+   explain 3 issues you find and why they matter. Use an educational, mentoring tone.
+   ```
+3. **Review Copilot's feedback style** - it should explain *why*, not just *what*
+4. **Act as Developer**: Now switch perspectives and ask:
+   ```
+   I'm the developer who wrote this code. I don't understand why [pick one issue from above] 
+   is a problem. Can you explain it with a simple example?
+   ```
+5. **Observe**: How does Copilot adjust its explanation for understanding?
+6. **Ask for alternatives**: 
+   ```
+   What are 2-3 different ways I could fix this issue? Compare their trade-offs.
+   ```
+7. **Reflection**: 
+   - How does explaining reasoning improve learning vs. just stating issues?
+   - How can you use this approach in real PR reviews?
+
 ---
 
-## **Exercise 5: Integration of Repository Documentation**
+### **Part E: Using Copilot to Mediate Implementation Disagreements**
+**Scenario**: Two developers disagree on the best approach. Use Copilot as a neutral mediator to evaluate options.
+1. **Setup the Disagreement**: Create a New Chat with this scenario:
+   ```
+   Two developers are debating how to handle database queries in our Flask app:
+   
+   Developer A wants: Direct SQLAlchemy queries in routes for simplicity
+   Developer B wants: Repository pattern with service layer for testability
+   
+   Our codebase context:
+   - Small team (3 developers)
+   - App has 15 routes currently
+   - Moderate complexity, growing
+   - Standards in #file:.github/copilot-instructions.md
+   
+   Analyze both approaches considering our context. What are the pros/cons of each?
+   ```
+2. **Review the analysis** - Copilot should provide balanced evaluation
+3. **Ask for recommendation**:
+   ```
+   Given our team size and app complexity, which approach would you recommend? 
+   Explain your reasoning.
+   ```
+4. **Explore migration path**:
+   ```
+   If we chose Developer B's approach, show me a migration strategy that minimizes 
+   disruption to ongoing work.
+   ```
+5. **Get concrete example**: Open `server/app.py`, select `get_dog_breed`, and prompt:
+   ```
+   Refactor #selection to follow Developer B's repository pattern approach. 
+   Show me the complete implementation including the repository class.
+   ```
+6. **Reflection**:
+   - How does having data-driven analysis help resolve disagreements?
+   - What questions should you ask Copilot when evaluating competing approaches?
 
-**Overview**: Leverage README, API docs, and other repository context to conduct architecture-aware reviews.
+---
+
+### **Part F: Generating Alternative Implementation Suggestions**
+
+**Scenario**: A developer implemented a solution, but you want to explore if there are better alternatives.
+
+1. **Review original implementation**: Open `server/app.py`, select the `get_dogs` route
+
+2. **Request alternatives**: Create a New Chat and prompt:
+   ```
+   Review #selection and generate 3 alternative implementations with different 
+   approaches (e.g., different patterns, libraries, or architectures).
+   
+   For each alternative:
+   - Show the code
+   - Explain when it's most appropriate
+   - List pros and cons
+   - Estimate complexity vs. the current approach
+   ```
+3. **Compare specific aspects**: Ask follow-up questions:
+   ```
+   Which alternative has:
+   - Best performance for 1000+ records?
+   - Easiest testing?
+   - Best maintainability for a small team?
+   ```
+4. **Evaluate against project constraints**:
+   ```
+   Considering our project standards in #file:.github/copilot-instructions.md 
+   and our current architecture in #file:API.md, which alternative fits best?
+   ```
+5. **Request hybrid approach**:
+   ```
+   Can you create a hybrid solution that combines the best aspects of alternatives 1 and 3?
+   ```
+6. **Reflection**:
+   - How does exploring alternatives prevent "first solution" bias?
+   - When should you invest time in generating alternatives vs. accepting the working solution?
+
+---
+
+### **Part G: Facilitating Team Code Review Meetings**
+**Scenario**: Your team is conducting a synchronous code review meeting. Use Copilot to keep discussion focused and productive.
+1. **Prepare meeting context**: Before the meeting, create a New Chat:
+   ```
+   @workspace Generate a code review agenda for the changes in feature/dog-age-api branch.
+   
+   Include:
+   - Summary of changes
+   - Key areas requiring team discussion
+   - Potential concerns or questions
+   - Estimated review time per section
+   
+   Reference: #file:pr-changes.diff
+   ```
+
+2. **During the meeting** - Answer questions in real-time:
+   - Developer asks: "Why is input validation important here?"
+   - Select get_dog_breed route in `server/app.py`
+   - You prompt Copilot: `Explain why input validation is critical for #selection, with a concrete security example`
+   - Share the explanation with the team
+
+3. **Capture action items**:
+   ```
+   Based on our discussion, we identified these issues:
+   1. Missing input validation on dog_id parameter
+   2. No error handling for database connection failures
+   3. Inconsistent response format vs. other endpoints
+   
+   Generate specific tasks with acceptance criteria for each issue.
+   ```
+4. **Generate follow-up documentation**:
+   ```
+   Create a review summary document that includes:
+   - Issues discussed
+   - Decisions made
+   - Action items assigned
+   - Timeline for fixes
+   
+   Format as a markdown file for our team wiki.
+   ```
+
+5. **Reflection**:
+   - How can Copilot help keep review meetings focused and productive?
+   - What types of questions are best answered in real-time during reviews?
+
+---
+
+## **Exercise 5: Integrating Repository Context for  Reviews**
+
+**Overview**: Leverage README, API docs, and other repository files as context to conduct architecture-aware reviews.
 
 ### Part A: Architecture Consistency Reviews
 1. Open `API.md` in tabs.
@@ -334,11 +490,16 @@ def get_dog_age(id: int):
 3. Review results - are patterns consistent?
 4. Ask: `Are there any inconsistencies in how we handle database queries across these functions?`
 
-### Part B: Documentation Lookup
+### Part B: Documentation Lookup for Review Context
 1. Reviewing code that uses Flask decorators
 2. Create a New Chat. Ask: `What are the best practices for Flask route decorators according to the Flask documentation?`
-3. Compare your code against best practices. Open app.py.
-4. Ask: `Do the routes in #file:app.py follow these best practices?`
+3. **Copilot should provide:**
+   - Summary of Flask decorator patterns
+   - Common pitfalls
+   - Performance considerations
+4. Compare your code against best practices. Open app.py.
+5. Ask: `Do the routes in #file:app.py follow these best practices?`
+6. **Reflection**: How does on-demand documentation lookup improve review confidence?
 
 ### Part C: Code Reviewer Assistant for Deep Code Analysis
 1. Create a code-reviewer agent.
@@ -470,101 +631,6 @@ def get_dog_age(id: int):
 
 ---
 
-
-
-## **Exercise 10: End-to-End Review Workflow**
-
-**Overview**: Conduct a complete code review from initial scan to final approval using all learned techniques.
-
-### Scenario: Review a Complete Feature
-You're reviewing the dog age calculator feature from Exercises1.md
-
-### Part A: Initial Scan
-1. Get the diff: `git diff main...feature/dog-age-api > feature-review.diff`
-2. Broad review: `@workspace Provide an initial assessment of changes in #file:feature-review.diff`
-3. Note the high-level feedback
-4. Ask: `What are the major areas that need deeper review?`
-
-### Part B: Systematic Deep Review
-For each changed file:
-
-1. **Backend Code Review** (`server/app.py`):
-   ```
-   Review changes to #file:server/app.py against:
-   - #file:.github/copilot-instructions.md
-   - #file:.github/code-review-checklist.md
-   - #file:.github/security-review-guide.md
-   - #file:.github/performance-review-guide.md
-   
-   Provide findings in priority order.
-   ```
-
-2. **Test Review** (`server/test_app.py`):
-   ```
-   Review #file:server/test_app.py for:
-   - Coverage of new functionality
-   - Edge case testing
-   - Proper mocking
-   - AAA pattern compliance
-   ```
-
-3. **Documentation Review**:
-   ```
-   @workspace Check if #file:API.md is updated to reflect new endpoints in #file:server/app.py
-   ```
-
-### Part C: Generate Review Summary
-1. Prompt:
-   ```
-   Generate a comprehensive PR review summary that includes:
-   - Overview of changes
-   - Critical issues found (must fix before merge)
-   - Minor suggestions (nice to have)
-   - Questions for the author
-   - Positive feedback
-   - Final recommendation (Approve/Request Changes/Needs Discussion)
-   ```
-2. Review the generated summary
-3. Save to: `pr-review-summary.md`
-
-### Part D: Track Review Iterations
-1. Assume author made fixes, prompt:
-   ```
-   Compare the original issues identified with current code in #file:server/app.py
-   Have all critical issues been addressed?
-   ```
-2. Generate follow-up comments if needed
-3. Final approval: `Generate an approval message summarizing improvements made`
-
----
-
-## **Exercise 11: Advanced Review Scenarios** *(Bonus)*
-
-### Part A: Reviewing Refactoring PRs
-1. Create a refactoring change (extract a helper function)
-2. Review with: `Review #selection to verify refactoring maintains functionality and improves code quality`
-3. Ask: `Are there any behavior changes introduced by this refactoring?`
-4. Verify tests still pass
-
-### Part B: Breaking Change Reviews
-1. Simulate a breaking API change
-2. Prompt: `@workspace Identify all places that would be affected by changing the endpoint /api/dogs to /api/v2/dogs`
-3. Review impact analysis
-4. Ask: `What migration strategy would you recommend?`
-
-### Part C: Large PR Review Strategy
-1. For PRs with many files, prompt:
-   ```
-   @workspace Analyze the changes across all files and:
-   1. Group related changes
-   2. Identify the logical sequence to review
-   3. Highlight areas of highest risk
-   4. Suggest if this should be split into smaller PRs
-   ```
-2. Follow the suggested review order
-
----
-
 ## **Assessment Checklist**
 
 After completing all exercises, you should be able to:
@@ -580,7 +646,6 @@ After completing all exercises, you should be able to:
 - [ ] Use inline and chat-based review workflows appropriately
 - [ ] Facilitate team learning through review discussions
 - [ ] Track review iterations and verify fixes
-- [ ] Handle complex review scenarios (refactors, breaking changes, large PRs)
 
 ---
 
@@ -597,12 +662,11 @@ After completing all exercises, you should be able to:
 - Open relevant files before starting review
 - Reference standards documents explicitly
 - Use `@workspace` for cross-file impact analysis
-- Keep review guides in `.github/` for easy reference
 
 ### Team Collaboration
 - Generate review reports for consistency
 - Use Copilot to explain complex feedback
-- Create reusable review templates
+- Create reusable review templates and agents
 - Document common review patterns
 
 ---
@@ -634,8 +698,8 @@ After completing these exercises, consider:
 
 ### Specialized Reviews
 - `Review #selection for security issues using #file:.github/security-review-guide.md`
-- `Review #selection for performance issues`
-- `Review #selection for accessibility issues`
+- `Review #selection for performance issues using #file:.github/performance-review-guide.md`
+- `Review #selection for accessibility issues using #file:.github/accessibility-review-guide.md`
 
 ### Documentation & Reporting
 - `Generate a code review report for #selection`
