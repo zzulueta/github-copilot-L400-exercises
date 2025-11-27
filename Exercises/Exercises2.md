@@ -631,6 +631,111 @@ def get_dog_age(id: int):
 
 ---
 
+## **Exercise 10: Apply Concepts** *(Bonus)*
+**Overview**: You've mastered the basics - now tackle a real-world scenario that combines all code review skills into a complete workflow.
+
+### Scenario: New Feature Implementation Review
+A team member has implemented a new "Dog Adoption Status" feature. Your task is to conduct a comprehensive end-to-end code review using all techniques learned.
+
+### Part A: Setup the Feature
+1. Create a new branch: `git switch -c feature/adoption-status`
+2. Add this route to `server/app.py` (before `if __name__ == '__main__':`):
+   ```python
+   @app.route('/api/dogs/<int:dog_id>/adoption', methods=['GET', 'POST'])
+   def manage_adoption(dog_id):
+       dog = Dog.query.get(dog_id)
+       if request.method == 'POST':
+           data = request.get_json()
+           status = data['status']
+           adopter = data.get('adopter_name')
+           # Update adoption logic here
+           return jsonify({"message": "Updated", "status": status})
+       return jsonify({"id": dog.id, "name": dog.name, "adoption_status": "available"})
+   ```
+3. Save the file
+
+### Part B: Multi-Dimensional Review (Exercises 1-2)
+1. Ensure the new route is selected in `server/app.py`
+2. Conduct a basic review: `Review #selection for potential issues`
+3. Review against standards: `Review #selection against #file:.github/copilot-instructions.md`
+4. Apply your checklist: `Review #selection using #file:code-review-checklist.md`
+5. Document findings in a new file using Agent: `Place findings in a new file called adoption-feature-review.md in the root directory`
+
+### Part C: Specialized Agent Reviews (Exercises 6-8)
+1. Ensure the new route is selected in `server/app.py`
+2. Switch to `security-reviewer` agent and run: `/security-review-selection`
+3. Switch to `performance-reviewer` agent and run: `/performance-review-selection`
+4. Use the `master-reviewer` agent for a comprehensive report
+5. Compile all agent findings into your review document
+
+### Part D: Interactive Improvement Session (Exercise 4)
+1. Ensure the new route is selected in `server/app.py`
+2. Using conversational review, progressively improve the code:
+   - Start: `How can I improve error handling in #selection?`
+   - Continue: `What about input validation for the POST data?`
+   - Ask: `Are there any security concerns with the adopter_name field?`
+   - Request: `Generate the complete improved version with all fixes`
+3. Apply the improved code to `app.py`
+
+### Part E: Generate Tests from Fixed Code
+1. Generate comprehensive tests:
+   ```
+   Generate unit tests for the adoption endpoint including:
+   - Happy path for GET and POST
+   - Edge cases (missing dog, invalid status)
+   - Security tests (SQL injection, XSS in adopter_name)
+   ```
+2. Step 3-9 are optional if you want to simulate creating your own agent and rules for testing.
+3. Create a new agent: `test-generator`. Hint: Use the information from other agent.md files as a reference.
+4. Create a test_rules.md file in the root directory and add content. Hint: Use the content from other rules.md files as a reference.
+5. Create a prompt file: test-generator-selection.prompt.md. Hint: Use the content from other selection.prompt.md files as a reference.
+6. Open Copilot Chat in test-generator mode.
+7. Open app.py and select the new adoption route.
+8. Prompt: `/test-generator-selection #file:selection ` to generate tests for the new route.
+9. Review the generated tests and save them in test_app.py.
+
+### Part F: Documentation Sync (Exercise 5)
+1. Verify documentation sync:
+   ```
+   @workspace Compare the new adoption route with #file:API.md. 
+   Generate documentation for the missing endpoint.
+   ```
+2. Adjusts the API.md file accordingly.
+
+### Part G: PR Workflow (Exercises 3, 9)
+1. Stage and commit changes with AI-generated message:
+   - `git add .`
+   - Follow the commit message generation steps from Exercise 9, Part B (steps 3-6)
+2. Push the branch: `git push -u origin feature/adoption-status`
+3. Create a diff: `git diff main...feature/adoption-status > adoption-pr.diff`
+4. Generate PR description using your template:
+   ```
+   Generate a pull request description using #file:pull-request-template.md 
+   based on #file:adoption-pr.diff
+   ```
+5. If MCP Server is configured, create the PR via Agent mode: `Create a pull request using the generated title and description`
+   - Approve if prompted
+6. Verify PR creation on GitHub
+
+### Reflection Questions
+After completing this exercise, consider:
+1. Which review technique caught the most critical issues?
+2. How did combining multiple specialized reviews improve coverage?
+3. What would you add to your team's review checklist based on this experience?
+4. How much time did using Copilot save compared to manual review?
+5. Which agents or prompts would you customize further for your projects?
+
+### Success Criteria
+- [ ] All security vulnerabilities identified and fixed
+- [ ] Code passes all checklist items
+- [ ] Comprehensive tests added (>80% coverage for new code)
+- [ ] API documentation updated
+- [ ] PR description follows team template
+- [ ] Final review report generated and saved.
+
+
+---
+
 ## **Assessment Checklist**
 
 After completing all exercises, you should be able to:

@@ -358,7 +358,7 @@ Create an API endpoint: `GET /api/dogs/<id>/human-age`
 
 ## **Exercise 10: Advanced Context Mastery** *(Bonus)*
 
-**Overvuew**: You've mastered the basics - now tackle on your own.
+**Overview**: You've mastered the basics - now tackle on your own.
 
 ### Part A: Cross-Stack Feature
 **Task**: Add breed filter to both API and frontend
