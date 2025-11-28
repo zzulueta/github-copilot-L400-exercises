@@ -15,47 +15,50 @@ This comprehensive set of exercises guides you through mastering code review wor
 ## **Prerequisites - Setup for Code Review Session**
 
 **Overview**: Follow these quick setup steps to prepare for code review exercises.
+### Part A: Clone the Sample Repository (if you haven't done Exercises1.md)
+1. Visit url: https://github.com/github-samples/pets-workshop
+2. Click on **Use this template** to create a new repository in your own GitHub account. Name the repository `pets-workshop`.
+3. Clone the new repository to your local machine. Open VS Code and Run in terminal:
+   - `git clone https://github.com/your-username/pets-workshop.git`
+4. Open the project in VS Code
 
-### Part A: Verify Application Setup
-1. Check if the application is already running:
-   - Frontend: http://localhost:4321
-   - Backend: http://localhost:5100/api/dogs
-2. If not running, start the application via terminal:
+### Part B: Verify Application Setup
+1. Start the application via terminal:
    - PowerShell: `.\scripts\start-app.ps1`
    - Bash: `./scripts/start-app.sh`
-3. Verify both frontend and backend are working
+2. Verify both frontend and backend are working
+   - Frontend: http://localhost:4321
+   - Backend: http://localhost:5100/api/dogs
 
-### Part B: Create Organizational Standards
+### Part C: Create Organizational Standards
 **(ONLY FOR THOSE WHO DID NOT ATTEND Session 1)**
 1. Create `.github/copilot-instructions.md` if it doesn't exist inside the .github directory. Copy the content from copilot-instructions.md into the new file.
 2. Save the file
 
-### Part C: Create a Feature Branch with Sample Code 
+### Part D: Create a Feature Branch with Sample Code 
 **(ONLY FOR THOSE WHO DID NOT ATTEND Session 1)**
 1. Create a new branch in the terminal: `git switch -c feature/dog-age-api`
 2. Add a sample route to `server/app.py` (add before `if __name__ == '__main__':`):
-   ```python
-   @app.route('/api/dogs/<int:dog_id>/human-age', methods=['GET'])
-   def get_dog_human_age(dog_id):
-       dog = Dog.query.get(dog_id)
-       if not dog:
-           return jsonify({"error": "Dog not found"}), 404
+```python
+@app.route('/api/dogs/<int:dog_id>/human-age', methods=['GET'])
+def get_dog_human_age(dog_id: int) -> Response | tuple[Response, int]:
+    dog = Dog.query.get(dog_id)
+    if not dog:
+        return jsonify({"error": "Dog not found"}), 404
        
-       # Calculate human age: First 2 years = 10.5 each, then 4 years per year
-       if dog.age <= 2:
-           human_age = dog.age * 10.5
-       else:
-           human_age = 21 + ((dog.age - 2) * 4)
+    # Calculate human age: First 2 years = 10.5 each, then 4 years per year
+    if dog.age <= 2:
+        human_age = dog.age * 10.5
+    else:
+        human_age = 21 + ((dog.age - 2) * 4)
        
-       return jsonify({
-           "dog_name": dog.name,
-           "dog_age": dog.age,
-           "human_age": int(human_age)
-       })
-   ```
+    return jsonify({
+        "dog_name": dog.name,
+        "dog_age": dog.age,
+        "human_age": int(human_age)
+    })
+```
 3. Save the file
-4. Test the endpoint: http://localhost:5100/api/dogs/1/human-age
-5. **Note**: This code intentionally has some review points (missing docstring, no type hints, etc.)
 
 ---
 
@@ -66,12 +69,14 @@ This comprehensive set of exercises guides you through mastering code review wor
 1. Ensure you're on the `feature/dog-age-api` branch
 2. Make a small change to `server/app.py`:
    - Add a new route that lacks error handling or proper validation (add before `if __name__ == '__main__':`)
-   ```python
-   @app.route('/api/dogs/<int:dog_id>/breed', methods=['GET'])
-   def get_dog_breed(dog_id):
-       dog = Dog.query.get(dog_id)
-       return jsonify({"breed": dog.breed.name})
-   ```
+```python
+@app.route('/api/dogs/<int:dog_id>/breed', methods=['GET'])
+def get_dog_breed(dog_id: int) -> Response | tuple[Response, int]:
+    dog = Dog.query.get(dog_id)
+    if not dog:
+        return jsonify({"error": "Dog not found"}), 404
+    return jsonify({"breed": dog.breed.name})
+```
    - Save the file.
 3. Select/highlight the new route. Open Copilot Chat in Ask and prompt: `Review #selection for potential issues`.  
 4. **Reflection**: Note what issues Copilot identifies (likely: no null checks, missing error handling)

@@ -12,6 +12,14 @@ Apply Copilot for inline documentation, test coverage, and clean commit hygiene.
 
 
 ---
+## **Prerequisites - Setup**
+1. Visit url: https://github.com/github-samples/pets-workshop
+2. Click on **Use this template** to create a new repository in your own GitHub account. Name the repository `pets-workshop`.
+3. Clone the new repository to your local machine. Open VS Code and Run in terminal:
+   - `git clone https://github.com/your-username/pets-workshop.git`
+4. Open the project in VS Code
+
+---
 
 ## **Exercise 1: Foundation - Copilot Instructions & Standards**
 
@@ -24,7 +32,9 @@ Apply Copilot for inline documentation, test coverage, and clean commit hygiene.
     - Notice the length and detailed response between the two models.
     - Identify Python (Flask/SQLAlchemy) and Svelte/Astro patterns
 3. Ask: `@workspace How to run this application?`
-4. Command to run the app will be given: `./scripts/start-app.ps1 `
+4. Command to run the app will be given: `./scripts/start-app.ps1 `.  Run it in terminal:
+    - PowerShell: `.\scripts\start-app.ps1`
+    - Bash: `./scripts/start-app.sh`
 5. See if the following are loaded and working:
     - Frontend (Astro/Svelte): http://localhost:4321
     - Backend (Dogs API endpoint): http://localhost:5100/api/dogs
