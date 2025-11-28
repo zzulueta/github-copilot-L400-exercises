@@ -10,6 +10,7 @@ This comprehensive set of exercises guides you through establishing lightweight 
 - Generate comprehensive PR summaries for knowledge sharing
 - Execute end-to-end quality workflows (refactor → review → document)
 - Demonstrate Copilot's role in organizational governance
+- Leverage GitHub MCP Server for automated governance enforcement
 
 ---
 
@@ -40,7 +41,8 @@ This comprehensive set of exercises guides you through establishing lightweight 
 1. Create folder structure: `docs/governance/`
 2. Create folder: `docs/api/`
 3. Create folder: `docs/architecture/`
-4. This structure will hold governance artifacts generated during exercises
+4. Create folder: `docs/governance/mcp-reports/`
+5. This structure will hold governance artifacts generated during exercises
 
 ---
 
@@ -846,7 +848,7 @@ def adopt_dog(dog_id: int) -> Response | tuple[Response, int]:
 
 ### Part A: Identify Refactoring Candidate
 **Scenario**: Analyze the codebase to find a suitable refactoring candidate.
-1. Create a New Chat
+1. Create a New Chat.
 2. Prompt:
    ```
    @workspace Analyze the codebase and identify the best candidate for 
@@ -866,7 +868,7 @@ def adopt_dog(dog_id: int) -> Response | tuple[Response, int]:
    5. Risk assessment
    ```
 3. Select one candidate based on the recommendations (change app.py)
-4. Document the decision:
+4. Add the governance folder as context then Prompt:
    ```
    Create a Refactoring Proposal document for app.py 
    including:
@@ -876,8 +878,10 @@ def adopt_dog(dog_id: int) -> Response | tuple[Response, int]:
    - Testing strategy
    - Documentation requirements
    
+   Look at governance documents for guidance.
    Save to: docs/governance/change-proposals/YYYY-MM-DD-proposal-name.md
    ```
+5. Review and refine the proposal if needed.
 
 ### Part B: Execute Refactoring with Governance
 **Scenario**: Refactor the selected code while adhering to governance standards.
@@ -904,6 +908,8 @@ def adopt_dog(dog_id: int) -> Response | tuple[Response, int]:
    ```
 5. Review each suggested change
 6. Accept the changes.
+7. When asked if you would like to modify the tests, respond with:
+   `Add missing tests. Add edge cases, boundary cases, contraints in the tests`
 
 
 ### Part C: Automated Review of Refactored Code
@@ -916,7 +922,7 @@ def adopt_dog(dog_id: int) -> Response | tuple[Response, int]:
 ``` markdown
 ---
 description: "Comprehensive Code Reviewer for GitHub Copilot – analyzes codebases for security, performance, quality, and testing issues, referencing supplemental checklists."
-tools: ["search", "problems", "fetch", "githubRepo"]
+tools: ["search", "problems", "fetch", "githubRepo", "edit"]
 model: Claude Sonnet 4.5
 ---
 
@@ -986,6 +992,7 @@ Each finding must include:
    ```
 5. Address any issues found
 6. Re-review until all criteria are met
+7. Save the final report to: `docs/reviews/app-py-refactor-review-YYYY-MM-DD.md`
 
 ### Part D: Generate Multi-Perspective Documentation
 **Scenario**: Create various documentation artifacts from the refactored code.
@@ -1019,7 +1026,7 @@ Each finding must include:
    - Standards validated
    - Tools used
    ```
-3. Save to: `docs/knowledge-base/case-studies/refactor-app.md`
+3. Save to: `docs/knowledge-base/refactor-app.md`
 
 ### Part E: Execute Pre-Commit Quality Gate and Commit
 **Scenario**: Execute the Pre-Commit Quality Gate before committing the refactored code.
@@ -1109,7 +1116,7 @@ Each finding must include:
    ```
 9. **Execute Pre-Review Quality Gate** (second gate from `quality-gates.md`):
    - Create a New Chat
-   - Prompt:
+   - Prompt (modify with your prNumber):
    ```
    Execute Pre-Review Quality Gate for PR #$prNumber based on 
    #file:refactor-pr.diff:
@@ -1133,12 +1140,16 @@ Each finding must include:
       gh pr edit $prNumber --add-reviewer <username1>,<username2>
       ```
     - Or via GitHub UI: Navigate to the PR → click "Reviewers" → select team members
+13. [Optional] Perform the following tasks:
+   - 4.B PR Summary for Different Audiences
+   - 4.C PR Decision Log
+   - 4.D Cross-Reference PR to Documentation
 
 ### Part G: Execute Pre-Merge Quality Gate (Optional)
 **Scenario**: After receiving review approval, execute the final quality gate before merging.
 1. **Execute Pre-Merge Quality Gate** (third gate from `quality-gates.md`):
    - Create a New Chat
-   - Prompt:
+   - Prompt (modify with your prNumber):
    ```
    Execute Pre-Merge Quality Gate for PR #$prNumber:
    
@@ -1153,10 +1164,6 @@ Each finding must include:
    ```
 2. Address any NO-GO items before proceeding
 3. Save gate evidence to: `docs/governance/audit-trail/YYYY-MM-DD-refactor-pre-merge-gate.md`
-4. [Optional] Perform the following tasks:
-   - 4.B PR Summary for Different Audiences
-   - 4.C PR Decision Log
-   - 4.D Cross-Reference PR to Documentation
 
 **Reflection:**
 - How does an end-to-end quality workflow enhance code reliability?
@@ -1175,7 +1182,6 @@ Each finding must include:
 - [ ] Knowledge artifacts generated and shared
 - [ ] Governance process validated and improved
 - [ ] Audit trail complete with all gate evidence files
-- [ ] Presentation demonstrates Copilot's governance value
 
 **Final Reflection:**
 1. How did Copilot streamline the governance workflow?
@@ -1184,6 +1190,173 @@ Each finding must include:
 4. How would you adapt this workflow for your organization?
 5. What metrics best demonstrate governance effectiveness?
 6. How do the quality gates ensure consistent code quality?
+
+---
+
+## **[OPTIONAL] Exercise 6: Governance Automation with GitHub MCP Server**
+
+**Overview**: Leverage the GitHub MCP Server to automate governance checks, retrieve PR metadata, and enforce quality gates programmatically within Copilot workflows.
+
+---
+
+### Prerequisites
+1. Search for "@mcp GitHub" in the VS Code Extensions marketplace and install it.
+2. Once installed, Check if the MCP Server is installed.
+3. Select Settings (gear icon) → Show Configuration (JSON)
+4. Click the Start MCP Server button.
+5. You will be prompted to authenticate with GitHub. Follow the instructions to authorize.
+6. Verify MCP Server is running by seeing the Status as Running.
+7. Restart VS Code to ensure MCP integration is active.
+8. In Agent mode, click tools icon and ensure "GitHub MCP" is listed among available tools.
+---
+
+### Part A: Automated PR Governance Check
+**Scenario**: Use MCP to fetch PR details and validate against governance criteria.
+1. Open Copilot Chat in Agent mode
+2. Prompt:
+   ```
+   Use the GitHub MCP server to fetch open PRs in the pets-workshop repository. 
+   For each PR, check:
+   - Does the title follow conventional commit format (feat:, fix:, refactor:, etc.)?
+   - Is there a description with at least 50 characters?
+   - Are there any requested reviewers assigned?
+   
+   Report compliance status for each PR in a table format.
+   ```
+3. Review the automated governance report
+4. Save findings to: `docs/governance/mcp-reports/pr-governance-check-YYYY-MM-DD.md`
+
+### Part B: Label-Based Quality Gate Enforcement
+**Scenario**: Automatically apply governance labels based on PR content analysis.
+1. Get your PR number of the recent refactor PR created in Exercise 5.
+2. Create a New Chat in Agent mode
+3. Prompt (replace with your PR number):
+   ```
+   Using GitHub MCP, analyze PR #[number] in the pets-workshop repository:
+   
+   1. Fetch the PR details and changed files
+   2. Analyze if documentation was updated for code changes
+   3. Check if tests exist for new functionality
+   4. Review if the PR description follows our template
+   
+   Based on analysis, suggest appropriate labels:
+   - "needs-docs" if documentation is missing for new features
+   - "needs-tests" if test coverage appears insufficient  
+   - "ready-for-review" if all governance criteria are met
+   - "breaking-change" if API changes detected
+   
+   Apply the suggested labels to the PR.
+   ```
+4. Verify labels were applied on GitHub
+
+### Part C: Automated Review Request Assignment
+**Scenario**: Intelligently assign reviewers based on changed files.
+1. Create a New Chat in Agent mode
+2. Prompt:
+   ```
+   Use GitHub MCP to analyze PR #[number] in pets-workshop:
+   
+   1. Get the list of files changed in the PR
+   2. For each file type, suggest appropriate reviewers:
+      - Python files (server/) → backend team
+      - Frontend files (src/) → frontend team
+      - Configuration files → DevOps team
+      - Documentation → tech writers
+   
+   3. Check the repository's recent commit history to identify 
+      contributors who have worked on similar files
+   
+   4. Generate a reviewer recommendation report with reasoning
+   ```
+3. Review the recommendations
+4. Save to: `docs/governance/mcp-reports/reviewer-assignment-YYYY-MM-DD.md`
+
+### Part D: Governance Dashboard Generation
+**Scenario**: Generate a governance status report for all open PRs.
+1. Create a New Chat in Agent mode
+2. Prompt:
+   ```
+   Using GitHub MCP, create a comprehensive governance dashboard for 
+   the pets-workshop repository:
+   
+   ## Open PRs Status
+   - List all open PRs with: number, title, author, age (days open), labels
+   - Flag PRs open longer than 7 days as "stale"
+   
+   ## Review Status
+   - PRs awaiting review (no reviews yet)
+   - PRs with requested changes
+   - PRs approved and ready to merge
+   
+   ## Governance Compliance
+   - PRs missing required labels
+   - PRs without linked issues (if your workflow requires them)
+   - PRs with merge conflicts
+   
+   ## Metrics Summary
+   - Average PR age
+   - Average time to first review
+   - PRs merged this week
+   
+   Format as a markdown dashboard with tables and status indicators.
+   ```
+3. Save to: `docs/governance/mcp-reports/pr-dashboard-YYYY-MM-DD.md`
+4. Consider scheduling this as a regular governance check
+
+### Part E: Issue-to-PR Traceability Check
+**Scenario**: Ensure all PRs have proper issue linkage for traceability.
+1. Create a New Chat in Agent mode
+2. Prompt:
+   ```
+   Using GitHub MCP, perform a traceability audit:
+   
+   1. Fetch all open PRs in pets-workshop
+   2. For each PR, check:
+      - Is there a linked issue in the description (Fixes #, Closes #, Resolves #)?
+      - Does the PR title reference an issue number?
+      - Are there any issue cross-references in commits?
+   
+   3. For PRs without issue links:
+      - Search for related open issues based on PR title/description
+      - Suggest potential issue matches
+   
+   4. Generate a Traceability Report:
+      - PRs with proper issue linkage ✅
+      - PRs missing issue linkage ⚠️
+      - Suggested issue associations
+      - Compliance percentage
+   
+   This supports our governance requirement for change traceability.
+   ```
+3. Save to: `docs/governance/mcp-reports/traceability-audit-YYYY-MM-DD.md`
+
+### Part F: Automated Stale PR Management
+**Scenario**: Identify and manage stale PRs to maintain repository health.
+1. Create a New Chat in Agent mode
+2. Prompt:
+   ```
+   Using GitHub MCP, implement stale PR management:
+   
+   1. Find all PRs that have been open for more than 14 days
+   2. For each stale PR:
+      - Check last activity date (comments, commits, reviews)
+      - Identify the author and reviewers
+      - Determine if there are unresolved review comments
+   
+   3. Generate actions for each stale PR:
+      - If no activity in 14+ days: Add "stale" label
+      - If no activity in 30+ days: Add comment requesting status update
+      - If blocked by review: Ping reviewers
+   
+   4. Create a Stale PR Report with:
+      - List of stale PRs with last activity date
+      - Recommended actions for each
+      - Overall repository health metrics
+   
+   Apply the "stale" label to qualifying PRs.
+   ```
+3. Review actions taken
+4. Save report to: `docs/governance/mcp-reports/stale-pr-report-YYYY-MM-DD.md`
 
 ---
 
@@ -1227,8 +1400,15 @@ After completing all exercises, you should be able to:
 ### Integration
 - [ ] Integrate Copilot governance into GitHub workflows
 - [ ] Automate governance compliance checks
-- [ ] Use MCP for advanced PR operations
 - [ ] Collect and track governance metrics
+
+### MCP Automation
+- [ ] Configure and connect GitHub MCP Server
+- [ ] Automate PR governance checks via MCP
+- [ ] Apply labels programmatically based on analysis
+- [ ] Generate governance dashboards from live repository data
+- [ ] Perform traceability audits across PRs and issues
+- [ ] Manage stale PRs with automated workflows
 
 ---
 
