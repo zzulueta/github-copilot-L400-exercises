@@ -207,25 +207,30 @@ Create an API endpoint: `GET /api/dogs/<id>/human-age`
 
 ### Part B: Implementation of Changes
 1. Close all tabs and open  `dog-age-plan.md`
-2. Go to aAgent mode in Copilot Chat
+2. Go to Agent mode in Copilot Chat
 3. Select the first step in the plan which is to modify `server/app.py`
 4. Prompt: `Implement the steps in #selection  one by one in #file:app.py. Place it at the bottom of the file`
-5. Review the generated code for the new endpoint and accept.
-
+5. Review the generated code for the new endpoint and accept. Close app.py.
+6. Select the step in the plan to modify `src/components/DogList.svelte`.
+7. Prompt: `Implement the steps in #selection one by one in #file:DogList.svelte.`
+8. Review the generated code for the new endpoint and accept.
 
 ### Part C: Documentation as You Code
-1. Place cursor inside get_dog function
+1. Open app.py Place cursor inside get_dog function
 2. Press Ctrl+I
 3. Use `/doc` to generate docstring
 4. Verify it matches your Google-style standard from instructions.
+5. Accept the docstring and save the file.
 
 ### Part D: Validation
-1. Open a new chat and select the new function created.
+1. Open a new chat and select the new function get_dog_human_age created in app.py.
 2. Prompt in Ask: `#selection How can I test this endpoint?`
    - Copilot should suggest either curl commands or a URL to test the endpoint
 3. Run the app and verify the new endpoint works (the endpoint URL will vary based on your implementation):
-   - `curl http://localhost:5100/api/dogs/1/human-age`
-
+   - Run in New Terminal: `curl http://localhost:5100/api/dogs/1/human-age`
+   - Browswer: `http://localhost:5100/api/dogs/1/human-age`
+4. Open DogDetails.svelte and Prompt in Ask: `#file:DogDetails.svelte How can I verify the human age is displayed correctly?`
+5. Follow the instructions to verify the frontend displays the human age correctly.
 ---
 
 ## **Exercise 6: Testing & Quality Assurance**
