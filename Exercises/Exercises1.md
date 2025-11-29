@@ -241,18 +241,26 @@ Create an API endpoint: `GET /api/dogs/<id>/human-age`
 1. Open `server/app.py`
 2. Highlight your `get_dog_human_age()` function (or whatever you named it)
 3. Create a New Chat, type: `/tests`
-4. **Verify**: 
-   - AAA pattern (Arrange, Act, Assert)?
-   - Proper mocking of database calls?
+4. If prompted to Configure Test Framework, select Accept
+   - Choose pytest as the framework
+   - Choose server as the test folder
+   - You would then need to re-highlight the function and use `/tests` again in the new chat.
 5. Select the new tests created in `test_app.py` and prompt in Ask:
    `Add tests cases to #selection for edge cases, boundaries, and constraints`
 6. Review and accept additional test cases
-7. Verify if testing follows your testing standards in `dog-age-plan.md`? 
-8. Prompt: verify if #file:test_app.py matches the criteria in #file:dog-age-plan.md:30-39 (select the testing standards section of `dog-age-plan.md`) 
-9. Run tests in terminal: `cd server && python -m pytest test_app.py -v`
-10. If tests fail, highlight the failing test
-11. Use `/fix` to correct issues
-12. **Goal**: All tests passing, 80%+ coverage
+   - Click Allow to have Agent test the unit tests.
+7. Verify if testing follows your testing standards in `dog-age-plan.md`.
+8. Open dog-age-plan.md and select the backend testing standards section.
+9. Prompt: `verify if #file:test_app.py matches the criteria in #selection for get_dog_human_age.`
+10. Prompt a follow-up: `Do we have any missing tests to #file:test_app.py that we should be adding?`
+   - Accept the new scenarios suggested by Copilot if any.
+   - Have Copilot add them to test_app.py and retest.
+11. Prompt in Agent:
+   `Add the new tests in #file:test_app.py  to the #file:dog-age-plan.md  testing checklist that are missing.`   
+12. Manually run tests in terminal in server folder: `python -m pytest test_app.py -v`
+13. If tests fail, highlight the failing test
+14. Use `/fix` to correct issues
+15. **Goal**: All tests passing, 80%+ coverage
 
 ### Part B: Test Coverage Analysis
 1. Create New Chat and close all tabs. Ask: `@workspace Which routes in app.py lack test coverage?`
