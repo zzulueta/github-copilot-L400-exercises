@@ -266,7 +266,7 @@ Create an API endpoint: `GET /api/dogs/<id>/human-age`
 1. Create a test agent.
    - Select Cog -> Custom Agents -> + Create new custom agent -> .github\agents
    - Name it: test
-   - Copy and paste the content from test-agent.md into the new agent.md file.
+   - Copy and paste the content from test-agent.md found in the Agent folder of the exercise repository into the new agent.md file.
 2. Save the agent file.
 
 ### Part C: Test Coverage Analysis
@@ -296,15 +296,18 @@ Create an API endpoint: `GET /api/dogs/<id>/human-age`
 1. Open `server/app.py`
 2. Temporarily introduce a bug: Remove a closing parenthesis from a route decorator
 3. Highlight the broken code
-4. Go to Ask in Chat and Prompt: `/fix`
-5. Review and accept the fix
-6. Introduce another bug: Change `@app.route('/api/dogs', methods=['GET'])` to `@app.route('/api/dogs', methods=['POST'])` 
-7. Run the backend and test the endpoint via browser: `http://localhost:5100/api/dogs`
+4. Go to Agent in Chat and Prompt: `/fix fix the error`
+5. Review and modify the fix
+6. Introduce another bug: Change `@app.route('/api/dogs', methods=['GET'])` to `@app.route('/api/dogs', methods=['POST'])`. Save the file. 
+7. Run the app and test the endpoint via browser: `http://localhost:5100/api/dogs`
 8. You should get a 405 Method Not Allowed error
 9. Take a screenshot of the error including the URL bar.
 10. Paste the screenshot into Copilot Chat and prompt in Ask: `@workspace help solve this issue`
 11. Copilot should be able to read the screenshot and suggest the fix.
 12. Fix the code and re-run the test to verify the endpoint works again.
+**Reflection**: 
+   - How effective was `/fix` in resolving issues?
+   - How did a screenshot input help in debugging?
 
 ### Part B: Code Optimization with `/optimize`
 1. Highlight the `get_dogs()` route function
