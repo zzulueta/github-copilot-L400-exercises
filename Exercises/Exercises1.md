@@ -40,16 +40,17 @@ Apply Copilot for inline documentation, test coverage, and clean commit hygiene.
     - Backend (Dogs API endpoint): http://localhost:5100/api/dogs
 
 ### Part B: Create Organizational Instructions
-1. Open app.py. Prompt in Ask:
+1. Open server/app.py. Prompt in Ask:
    - Ask: `Create a Flask route that returns all breeds (used by the frontend filter). It should query the Breed model and returns JSON.`
    - Note the output quality.
+   - Make sure you are in Ask mode, not Agent mode so that the file is not modified yet.
 2. Create a new file in the **.github** folder called **copilot-instructions.md**.
 3. Add standards for:
    - Python backend (type hints, PEP 8, docstrings)
    - Frontend (TypeScript, Svelte patterns, accessibility)
    - Testing (AAA pattern, 80% coverage, mocking)
 
-Paste content below:
+Paste content below and SAVE the file:
 ````markdown
 # Dog Shelter Application
 
@@ -78,7 +79,7 @@ Paste content below:
 - Tests should follow AAA pattern (Arrange, Act, Assert)
 ````
 
-4. Create a New Chat and Ask Copilot for the same prompt:
+4. Create a New Chat in Ask  and Ask Copilot for the same prompt:
     - Ask: `Create a Flask route that returns all breeds (used by the frontend filter). It should query the Breed model and returns JSON.`
     - Compare with result in Part A and verify if new result follows your standards
     - Check if **References** shows `copilot-instructions.md`
@@ -94,7 +95,9 @@ Paste content below:
 2. Go the the end of the file but before 'if __name__ == '__main__':'
    Add comment: `# Route to get dogs by size (small, medium, large)`
 3. Accept the suggested completion by pressing the Tab key
-4. **Reflection**: When is inline sufficient? (Answer: For simple, file-local tasks)
+4. **Reflection**: 
+   - When is inline sufficient? (Answer: For simple, file-local tasks)
+   - Did it follow the instructions in `copilot-instructions.md`? 
 5. Remove the newly added route to keep the code clean
 
 ### Part B: Chat Context (Multi-file Awareness)
@@ -135,11 +138,14 @@ Paste content below:
 1. Plan to add a new API endpoint
 2. Open ONLY: `server/app.py`, `server/models/dog.py`. Close unrelated frontend files
 3. Ask: `How should I add a new endpoint for dog age calculation?`
-4. Close all files. Create a New Chat.
-5. Ask: `@workspace How should I add a new endpoint for dog age calculation?`
-6. Close all files again. Create a New Chat.
-7. Ask: `@workspace How should I add a new endpoint for dog age calculation? Create a plan first with no code yet.`
-8. **Reflection**:  
+4. Observe the response
+5. Close all files. Create a New Chat.
+6. Ask: `@workspace How should I add a new endpoint for dog age calculation?`
+7. Observe the response
+8. Close all files again. Create a New Chat.
+9. Ask: `@workspace How should I add a new endpoint for dog age calculation? Create a plan first with no code yet.`
+10. Observe the response
+11. **Reflection**:  
     - How did managing open files affect the responses?
     - How did @workspace change the result.
     - How did creating a plan first help?
@@ -163,7 +169,7 @@ Paste content below:
 3. Follow up: `/explain #file:server/models/dog.py the Dog model relationships`
 
 ### Part C: Understanding Patterns
-1. Highlight any route in `server/app.py`
+1. Close all files and open `server/app.py`. Highlight any route in `server/app.py`
 2. Use `/explain`
 3. Ask: `Are all routes following the same pattern?`
 4. **Learning**: Identify consistency in the codebase
@@ -183,14 +189,16 @@ Create an API endpoint: `GET /api/dogs/<id>/human-age`
 
 ### Part A: Planning with Context
 1. Close all tabs.
-2. Go to Plan mode in Copilot Chat
+2. Go to Ask mode in Copilot Chat
 3. Prompt:
+```
    @workspace  Create a plan to implement an API endpoint: GET /api/dogs/<id>/human-age
    Requirements:
    - Returns JSON: {"dog_name": "Max", "dog_age": 3, "human_age": 21}
    - Formula: First 2 years = 10.5 human years each, then 4 years per year after
    - Must be shown in the front end
    - Add tests
+```
 4. Review Copilot's architectural suggestion
 5. Go to Agent mode in Copilot Chat
 6. Prompt:
