@@ -262,24 +262,29 @@ Create an API endpoint: `GET /api/dogs/<id>/human-age`
 14. Use `/fix` to correct issues
 15. **Goal**: All tests passing, 80%+ coverage
 
-### Part B: Test Coverage Analysis
-1. Create New Chat and close all tabs. Ask: `@workspace Which routes in app.py lack test coverage?`
-2. Review the list of untested routes
-3. For each untested route:
-   - Highlight the route in `server/app.py` such as get_dogs()
-   - Use `/tests` command
-   - Prompt to add edge cases, boundaries, and constraints in the tests created.
-   - Copy generated tests to `server/test_app.py`
-4. Run tests in terminal: `cd server && python -m pytest test_app.py -v`
-5. If tests fail, highlight the failing test
-6. Use `/fix` to correct issues
-7. **Goal**: All tests passing, 80%+ coverage
+### Part B: Create a Test Agent for Coverage Analysis
+1. Create a test agent.
+   - Select Cog -> Custom Agents -> + Create new custom agent -> .github\agents
+   - Name it: test
+   - Copy and paste the content from test-agent.md into the new agent.md file.
+2. Save the agent file.
 
-### Part C: Generate Test Data (Optional)
-1. Create New Chat and close all tabs. Ask: `Create realistic test fixtures for dog data following the Dog model schema`
-2. Use Agent. Prompt: create a test_fixtures.py file in the same directory as test_app.py
-3. Use Agent. Prompt: refactor #file:test_app.py to use #file:test_fixtures.py for consistency
-4. Again verify all tests pass with `cd server && python -m pytest test_app.py -v`
+### Part C: Test Coverage Analysis
+1. Create New Agent Chat and close all tabs. Ask: `@workspace Which routes in app.py lack test coverage?`
+2. Review the list of untested routes
+3. Highlight the get_dogs route in `server/app.py`
+4. Select **test** agent created in Part B
+5. Prompt: `Create tests for the #selection`
+6. Repeat steps 3-5 for get_dog route.
+7. Review and accept the generated tests in `test_app.py`
+8. Verify all tests pass with `cd server && python -m pytest test_app.py -v`
+**Reflection**: How did the test agent help identify test scenarios?
+
+### Part D: Generate Test Data
+1. Create New Chat and close all tabs. Ask: `@workspace Create realistic test fixtures for dog data following the Dog model schema`
+2. Use Agent. Prompt: `create a test_fixtures.py file in the same directory as test_app.py`
+3. Use Agent. Prompt: `refactor #file:test_app.py to use #file:test_fixtures.py for testing`
+4. Manually verify all tests pass with `cd server && python -m pytest test_app.py -v`
 5. Use `/fix` if any tests fail
 ---
 
