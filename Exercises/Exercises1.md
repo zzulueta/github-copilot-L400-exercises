@@ -174,6 +174,11 @@ Paste content below and SAVE the file:
 3. Ask: `Are all routes following the same pattern?`
 4. **Learning**: Identify consistency in the codebase
 
+**Reflection**: 
+   - How did `/explain` help in understanding code?
+   - How did workspace-level context improve architectural understanding?
+   - How did file-level context help in understanding specific implementations?
+
 ---
 
 ## **Exercise 5: Feature Development Workflow**
@@ -231,6 +236,10 @@ Create an API endpoint: `GET /api/dogs/<id>/human-age`
    - Browswer: `http://localhost:5100/api/dogs/1/human-age`
 4. Open DogDetails.svelte and Prompt in Ask: `#file:DogDetails.svelte How can I verify the human age is displayed correctly?`
 5. Follow the instructions to verify the frontend displays the human age correctly.
+
+**Reflection**: 
+   - How did planning first improve implementation?
+   - Did Copilot follow your organizational standards during implementation?
 ---
 
 ## **Exercise 6: Testing & Quality Assurance**
@@ -261,6 +270,9 @@ Create an API endpoint: `GET /api/dogs/<id>/human-age`
 13. If tests fail, highlight the failing test
 14. Use `/fix` to correct issues
 15. **Goal**: All tests passing, 80%+ coverage
+**Reflection**: 
+   - How effective was `/tests` in generating initial test cases?
+   - How did asking for additional test cases improve coverage?
 
 ### Part B: Create a Test Agent for Coverage Analysis
 1. Create a test agent.
@@ -278,7 +290,9 @@ Create an API endpoint: `GET /api/dogs/<id>/human-age`
 6. Repeat steps 3-5 for get_dog route.
 7. Review and accept the generated tests in `test_app.py`
 8. Verify all tests pass with `cd server && python -m pytest test_app.py -v`
-**Reflection**: How did the test agent help identify test scenarios?
+**Reflection**: 
+   - How did the test agent help identify test scenarios?
+   - How did the test agent reduce manual effort in test creation?
 
 ### Part D: Generate Test Data
 1. Create New Chat and close all tabs. Ask: `@workspace Create realistic test fixtures for dog data following the Dog model schema`
@@ -286,6 +300,8 @@ Create an API endpoint: `GET /api/dogs/<id>/human-age`
 3. Use Agent. Prompt: `refactor #file:test_app.py to use #file:test_fixtures.py for testing`
 4. Manually verify all tests pass with `cd server && python -m pytest test_app.py -v`
 5. Use `/fix` if any tests fail
+6. **Reflection**: How did using test fixtures impact your testing process?
+
 ---
 
 ## **Exercise 7: Debugging & Refactoring**
@@ -318,14 +334,38 @@ Create an API endpoint: `GET /api/dogs/<id>/human-age`
 4. Apply improvements that make sense.
 5. Re-run tests to ensure nothing broke.  
 6. Use the /fix command if errors are introduced
+**Reflection**: 
+   - What optimizations were suggested?
+   - Did they improve code quality?
 
 ### Part C: Refactoring with Context
-1. Open  `server/app.py`
-2. Agent: `How can I reduce code duplication across these routes?`
+1. Close all tabs. Open  `server/app.py`
+2. Open a new chat in Ask: `How can I reduce code duplication across these routes in #file:app.py?`
 3. Review Copilot's refactoring suggestions
-4. Accept and implement refactoring
-5. Re-run tests to ensure refactoring didn't break functionality
-
+4. Do not implement any refactoring
+5. Close all tabs.
+6. Open a new chat in Ask mode. Prompt:
+```
+   @workspace Analyze the codebase and identify the best candidate for 
+   refactoring based on:
+   
+   - Code complexity
+   - Standards violations (check against #file:.github/copilot-instructions.md)
+   - Missing documentation
+   - Lack of tests
+   - Duplicate code
+   
+   Provide:
+   1. Top 3 refactoring candidates
+   2. Reasoning for each
+   3. Estimated effort
+   4. Expected quality improvement
+   5. Risk assessment
+```
+7. Review the suggestions.
+**Reflection**: 
+   - How did workspace-level analysis differ from file-level?
+   - Which approach provided more actionable insights?
 ---
 
 ## **Exercise 8: Documentation & Code Hygiene**
@@ -333,25 +373,30 @@ Create an API endpoint: `GET /api/dogs/<id>/human-age`
 **Overview**: Before committing, ensure code is well-documented and clean.
 
 ### Part A: Documentation Sweep
-1. Close all tabs and open New Chat.
-2. Attach the server folder in Chat.
-3. Prompt in Agent: `Search for all files in the folder to see if they follow documentation standards as specified in the instructions file`
-4. Review the list of undocumented functions
-5. Prompt in Agent: `fix the documents with missing docstrings`
-6. Run tests to ensure no functionality is broken.
-7. **Goal**: Document an entire module in under 5 minutes
+1. Close all tabs and open New Chat in Agent.
+2. Prompt in Agent: `@workspace Search for all files to see if they follow documentation standards as specified in the instructions file`
+   - Type `yes` if agent asks for confirmation to create a script to scan files.
+3. Review the list of undocumented functions
+4. Prompt in Agent: `fix #file:dog.py to meet documentation standards`
+5. Review and accept generated docstrings
+6. Repeat for other files with missing documentation [Optional]
 
 ### Part B: API Documentation
-1. Create new Chat. Use Agent and propmpt: `@workspace Generate API documentation called API.md in root directory for all APIs in this app including: curl examples, request format, response schema, and error cases`
+1. Create new Chat. Use Agent and propmpt: `@workspace Generate API documentation for all APIs in this app including: curl examples, request format, response schema, and error cases.`
 2. Review the generated documentation format
+3. Save it in docs\api-documentation.md
 
 ### Part C: Code Comments for Complex Logic
 1. Identify complex sections (algorithms, business logic) in your code
-2. Prompt in Agent: `@workspace search for the most complex part of the app logic`
-3. Highlight any complex section mentioned in #2.
-4. Ask: `Add inline comments explaining this logic step by step`
+2. Create New Chat. Prompt in Agent: `@workspace search for the most complex part of the app logic`
+3. Open the file and select the complex section mentioned in #2.
+4. Ask: `Add inline comments to the #selection explaining this logic step by step to guide developers in the future on the logic`
 5. Review generated comments
 
+**Reflection**: 
+   - How did Copilot assist in improving documentation?
+   - Did it follow your organizational standards?
+   - How did inline comments enhance code readability for complex logic?
 ---
 
 ## **Exercise 9: Commit & Collaboration**
@@ -359,28 +404,29 @@ Create an API endpoint: `GET /api/dogs/<id>/human-age`
 **Overview**: Feature is complete, tested, optimized, and documented - ready to commit!
 
 ### Part A: Generate Meaningful Commit Messages
-1. Create a new branch: `git switch -c feature/dog-age-api`
+1. Create a new branch: `git switch -c feature/version2`
 2. Stage your changes: `git add .`
 3. Open the Source Control panel (Ctrl+Shift+G)
 4. Click the **sparkles** icon (✨) next to the commit message box
 5. Select **Generate Commit Message**
 6. **Verify**: 
    - Does it capture the intent of your changes?
-7. If not, copy the generated message and place in a notepad. 
-8. Prompt in Ask: `@workspace Improve this commit message to better reflect the changes made, following best practices for clarity and detail.` Then paste the copied message before sending the request to Copilot Chat.
-9. Prompt for any missing details or improvements.
-10. Use the improved message for your commit.
+   - Does it have a format that follows best practices (e.g., concise summary, detailed body)?
+7. Copy the generated message in a notepad for comparison later
+8. Do not perform the commit yet.
 
-### Part B [Optional]: Standardize Commit Messages using Commit Message Instructions
-1. Go to Manage Settings (gear icon) in Source Control panel
-2. Select **GitHub Copilot Settings**. Search for Commit Message Generation: Instructions
+### Part B: Standardize Commit Messages using Commit Message Instructions
+1. Click Ctrl+, (Ctrl and comma) to open Settings
+2. Search for: Commit Message Generation: Instructions
 3. Click Edit in settings.json
 4. Select "file": ".copilot-commit-message-instructions.md"
 5. Create a new file in the root directory called `.copilot-commit-message-instructions.md`
 6. Copy and paste the content from this url: https://github.com/SimonSkoda13/Copilot-commit-message-instructions/blob/main/.copilot-commit-message-instructions.md
 7. Save the file
-8. Repeat steps 3-10 in Part A to generate a new commit message. However, this time add the new instructions file as reference to the prompt. `@workspace Improve this commit message to better reflect the changes made, following best practices for clarity and detail. Use this file as reference: #file:.copilot-commit-message-instructions.md`
-9. **Verify**: 
+8. Open the Source Control panel (Ctrl+Shift+G)
+9. Click the **sparkles** icon (✨) next to the commit message box
+10. Select **Generate Commit Message**
+11. **Verify**: 
    - Does it now follow the new commit message standards?
    - Compare with previous commit message
 
@@ -395,7 +441,46 @@ Create an API endpoint: `GET /api/dogs/<id>/human-age`
 5. Review and compare with previous commit messages.
 6. Use the best commit message for your commit.
 
-## **Exercise 10: Advanced Context Mastery** *(Bonus)*
+**Reflection**: 
+   - How did commit message instructions improve the quality of messages?
+   - How did having a commit message standard help in consistency?
+   - How did using git diff enhance the context for generating commit messages?
+
+---
+
+## **Exercise 10: Front-End Testing using Playwright MCP server** *(Bonus)*
+**Overview**: Ensure front-end components work as expected using Playwright MCP server.
+### Part A: Test Generation for Frontend Components
+1. Create a New Chat in Copilot Chat
+2. Prompt in Agent: `Create a test plan for #file:DogDetails.svelte and #file:DogList.svelte`
+3. Prompt in Agent: `Save the generated tests in client/tests/ folder`
+4. Prompt in Agent: `Read through the files and create me a user readable list of tests`
+5. Save the list in `frontend-test-plan.md` in the client/tests folder
+
+### Part B: Playwright MCP Server Setup
+1. Go to Extensions in VS Code (Ctrl+Shift+X)
+2. Search for "@mcp Playwright" by Microsoft.com and install it
+3. Click the Cog icon next to the extension and select Show Configuration (JSON)
+4. Click the Start MCP Server button
+
+### Part C: Playwright MCP Testing
+1. Open a new chat in Agent.
+2. Prompt in Agent: 
+```
+Run the #file:frontend-test-plan.md using the Playwright MCP Server and provide a summary of results.
+The Frontend can be access via this url: http://localhost:4321
+```
+3. Notes: 
+- You may be prompted to install Playwright. Click Yes to install.
+- You will be asked for permissions to run the tests. Click Allow.
+4. Observe how Playwright MCP server runs the tests and provides results.
+5. Save the test results in `frontend-test-results.md` in the client/tests folder
+**Reflection**: 
+   - How did Playwright MCP server simplify front-end testing?
+   - How effective was Copilot in generating front-end tests?
+---
+
+## **Exercise 11: Advanced Context Mastery** *(Bonus)*
 
 **Overview**: You've mastered the basics - now tackle on your own.
 
