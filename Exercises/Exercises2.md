@@ -14,8 +14,8 @@ This comprehensive set of exercises guides you through mastering code review wor
 
 ## **Prerequisites - Setup for Code Review Session**
 
-**Overview**: Follow these quick setup steps to prepare for code review exercises.
-### Part A: Clone the Sample Repository (if you haven't done Exercises1.md)
+**Overview**: Follow these quick setup steps to prepare for governance and documentation exercises.
+### Part A: Clone the Sample Repository (if you haven't done any exercise)
 1. Visit url: https://github.com/github-samples/pets-workshop
 2. Click on **Use this template** to create a new repository in your own GitHub account. Name the repository `pets-workshop`.
 3. Clone the new repository to your local machine. Open VS Code and Run in terminal:
@@ -30,43 +30,18 @@ This comprehensive set of exercises guides you through mastering code review wor
    - Frontend: http://localhost:4321
    - Backend: http://localhost:5100/api/dogs
 
-### Part C: Create Organizational Standards
-**(ONLY FOR THOSE WHO DID NOT ATTEND Session 1)**
-1. Create `.github/copilot-instructions.md` if it doesn't exist inside the .github directory. Copy the content from copilot-instructions.md into the new file.
-2. Save the file
-
-### Part D: Create a Feature Branch with Sample Code 
-**(ONLY FOR THOSE WHO DID NOT ATTEND Session 1)**
-1. Create a new branch in the terminal: `git switch -c feature/dog-age-api`
-2. Add a sample route to `server/app.py` (add before `if __name__ == '__main__':`):
-```python
-@app.route('/api/dogs/<int:dog_id>/human-age', methods=['GET'])
-def get_dog_human_age(dog_id: int) -> Response | tuple[Response, int]:
-    dog = Dog.query.get(dog_id)
-    if not dog:
-        return jsonify({"error": "Dog not found"}), 404
-       
-    # Calculate human age: First 2 years = 10.5 each, then 4 years per year
-    if dog.age <= 2:
-        human_age = dog.age * 10.5
-    else:
-        human_age = 21 + ((dog.age - 2) * 4)
-       
-    return jsonify({
-        "dog_name": dog.name,
-        "dog_age": dog.age,
-        "human_age": int(human_age)
-    })
-```
-3. Save the file
-
+### Part C: Setup Basic Organizational Standards
+1. Copy the  `.github/copilot-instructions.md` from exercises repository to the `.github/` folder in your cloned repository
+1. Copy the  `.copilot-commit-message-instructions.md` from exercises repository to the `root` folder in your cloned repository
 ---
 
 ## **Exercise 1: Foundation - Understanding Code Review Context**
 **Overview**: Before conducting reviews, understand how Copilot leverages context to provide meaningful feedback on code changes.
 
 ### Part A: Basic Code Review with Copilot Chat
-1. Ensure you're on the `feature/dog-age-api` branch
+**Scenario**: You want to review a newly added route for potential issues.
+1. Create a new branch
+   - `git switch feature/version2`
 2. Make a small change to `server/app.py`:
    - Add a new route that lacks error handling or proper validation (add before `if __name__ == '__main__':`)
 ```python
@@ -84,13 +59,13 @@ def get_dog_breed(dog_id: int) -> Response | tuple[Response, int]:
 6. Compare the quality of review between free models (GPT-5 mini) and premium models (Claude Sonnet 4.5)
 
 ### Part B: Leveraging Repository Standards in Reviews
-1. Ensre you have `.github/copilot-instructions.md` from Exercise1.md.
-2. Highlight the same code from Part A (get_dog_breed)
-3. Create a New Chat and prompt: `Review #selection against the project standards in #file:.github/copilot-instructions.md`
-4. **Reflection**: 
+**Scenario**: You want to ensure new code adheres to your project's coding standards.
+1. Highlight the same code from Part A (get_dog_breed)
+2. Create a New Chat and prompt: `Review #selection against the project standards in #file:.github/copilot-instructions.md`
+3. **Reflection**: 
    - Does Copilot now check for type hints, docstrings, and error handling?
    - How does explicit reference to standards improve review quality?
-5. Ask: `Does this code follow PEP 8 and our documentation standards?`
+4. Ask: `Does this code follow PEP 8 and our documentation standards?`
 
 ### Part C: Multi-File Context Reviews
 1. Open both `server/app.py` and `server/models/dog.py`
@@ -101,6 +76,7 @@ def get_dog_breed(dog_id: int) -> Response | tuple[Response, int]:
     - Notice that #selection only works if the file is the active tab and the selection is in the same file.
 
 ### Part D: Workspace Code Reviews
+**Scenario**: You want to conduct a comprehensive review of the entire codebase for standards compliance, consistency, test coverage, and documentation completeness.
 #### Full Codebase Standards Compliance
 1. Close all tabs and open a New Chat
 2. Prompt in Ask:
@@ -174,6 +150,7 @@ def get_dog_breed(dog_id: int) -> Response | tuple[Response, int]:
 2. Save report to: `workspace-review-report.md`
 
 ### Part E: Performing Code Reviews on Uncommited Changes and Inline Review.
+**Scenario**: You want to compare inline code review vs. chat-based review for uncommitted changes.
 1. Select Source Control in the Left Navigation Bar (Ctrl+Shift+G).
 2. Select Code Review - Uncommited Changes (found in the Source Control panel).
 3. Navigate through the Code Review comments using the arrows in the top right of the Code Review panel.
@@ -188,6 +165,7 @@ Inline review focuses on the specific changes, while chat-based allows broader c
 11. Compare the number of issues found in this approach vs the Code Review - Uncommited Changes approach.
 12. Open a New Chat in Ask and prompt: `#file:server/app.py Check for possible errors`
 13. **Reflection**: How does reviewing the whole file compare to the Chat Review approach?
+
 ---
 
 ## **Exercise 2: Creating Custom Review Standards**
@@ -195,11 +173,13 @@ Inline review focuses on the specific changes, while chat-based allows broader c
 **Overview**: Build a dedicated review checklist that Copilot can use to conduct systematic code reviews aligned with team practices.
 
 ### Part A: Create a Code Review Checklist
+**Scenario**: You want to formalize your team's review standards into a checklist for consistent reviews.
 1. Create a new file: `code-review-checklist.md`
 2. Add content from code-review-checklist.md.
 3. Save the file
 
 ### Part B: Test the Review Checklist
+**Scenario**: You want to validate that your checklist effectively identifies issues in new code.
 1. Open `server/app.py` and add a problematic route (before if __name__ == '__main__':):
    ```python
    @app.route('/api/search', methods=['GET'])
@@ -220,6 +200,7 @@ Inline review focuses on the specific changes, while chat-based allows broader c
 5. Ask: `Generate an improved version that passes all checklist items`
 
 ### Part C: Review Existing Features Against Checklist
+**Scenario**: You want to audit existing routes for compliance with your new checklist.
 1. Close all tabs and open New Chat
 2. Prompt in Ask: `@workspace Review all routes in #file:server/app.py against #file:code-review-checklist.md and create a summary report`
 3. Review the generated report
@@ -233,27 +214,38 @@ Inline review focuses on the specific changes, while chat-based allows broader c
 **Overview**: Simulate a PR review workflow using Copilot to provide comprehensive feedback on code changes.
 
 ### Part A: Review a Feature Branch
+**Scenario**: You want to review changes made in the `feature/dog-age-api` branch before merging.
 1. Ensure you're on `feature/dog-age-api` branch with changes
 2. Get a diff of your changes: `git diff main...feature/dog-age-api > pr-changes.diff`
 3. Open the diff file in editor
 4. Prompt in Ask: `Review the changes in #file:pr-changes.diff for potential issues, considering #file:.github/copilot-instructions.md and #file:code-review-checklist.md`
 5. **Reflection**: How comprehensive is the review?
-6. Ask follow-up: `What are the top 3 improvements needed before merging?`
+6. Ask follow-up: `What are the top 3 improvements needed?`
 
 ### Part B: Create a PR Review Template
+**Overview**: Standardize PR reviews using a custom template.
 1. Create file: `pull-request-template.md` and place it in the root directory.
 2. Add content from this url: https://docs.github.com/en/copilot/tutorials/customization-library/custom-instructions/pull-request-assistant
 3. Save the file
 
 ### Part C: AI-Assisted PR Description Generation
+**Scenario**: You want to create a PR description that clearly communicates changes to reviewers.
 1. Stage your changes: `git add .`
-2. Create a commit message following the steps in **Exercises1.md - Exercise 9: Commit & Collaboration**
-3. Commit the message. Push the branch via the terminal: `git push -u origin feature/dog-age-api`
-4. Select the GitHub Tab and Click Create a New Pull Request in VS Code. (Must have GitHub Pull Requests extension installed)
-5. Select the Generate Description option and review the generated description.
-6. Do not create the PR yet.
+2. Run the following command in terminal to get the git diff of your changes:
+   - `git diff --cached --stat > changes-summary.txt`
+   - `git diff --cached > changes-detailed.txt`
+3. The first file contains a summary of changes, while the second file contains detailed diffs.
+4. Open a new chat in Copilot Chat
+5. Create a prompt in Ask:
+   - `@workspace Generate a meaningful commit message based on the following summary of changes: #file:changes-summary.txt and detailed diffs: #file:changes-detailed.txt using the organizational commit message standards in #file:.copilot-commit-message-instructions.md`
+6. Copy the message generated then go to Source Control (Ctrl+Shift+G) and paste the commit message. Commit the changes.
+7. Push the branch via the terminal: `git push -u origin feature/version2`
+8. Select the GitHub Tab and Click Create a New Pull Request in VS Code. (Must have GitHub Pull Requests extension installed)
+9. Select the Generate Description option and review the generated description. Save the description in a notebook for comparison in Part D.
+10. Do not create the PR yet.
 
 ### Part D: Standardize PR Description using Pull Request Template
+**Scenario**: You want to ensure PR descriptions follow a consistent format using your custom template.
 1. Generate a diff of all changes between the main branch and the feature/dog-age-api branch and save the output to a file named pr-changes.diff:
 - Run in terminal: `git diff main...feature/dog-age-api > pr-changes.diff`
 2. Prompt in Ask: `Generate a pull request description using this template #file:pull-request-template.md based on changes in #file:pr-changes.diff`
@@ -267,6 +259,7 @@ Inline review focuses on the specific changes, while chat-based allows broader c
 **Overview**: Use conversational feedback loops to deepen review insights and catch subtle issues.
 
 ### Part A: Progressive Review Depth
+**Scenario**: You want to conduct a layered review of a function to uncover deeper issues.
 1. Create a New Chat. Highlight a get_dog function in `server/app.py` 
 2. Start with broad review: `Review #selection for issues`
 3. Ask follow-up questions:
@@ -277,6 +270,7 @@ Inline review focuses on the specific changes, while chat-based allows broader c
 4. **Reflection**: How does asking focused questions reveal deeper issues?
 
 ### Part B: Conversational Code Improvement
+**Scenario**: You want to iteratively improve a function based on Copilot's suggestions.
 1. Create a New Chat. Take a function that Copilot flagged with issues (get_dog_breed). Close all tabs and open New Chat. Select the function.
 2. Have a conversation to improve it:
    - You: `#selection How can I improve the error handling here?`
@@ -288,6 +282,7 @@ Inline review focuses on the specific changes, while chat-based allows broader c
 4. **Goal**: Understand how iterative questioning produces better results
 
 ### Part C: Team Standards Clarification
+**Scenario**: Your team recently adopted Google-style docstrings. Use Copilot to help implement this standard.
 1. Create a New Chat. Prompt: `@workspace In #file:.github/copilot-instructions.md, we require Google-style docstrings. Show me an example for a Flask route that queries the database`
 2. Review the example
 3. Open app.py. Select get_dog_breed route, prompt: `Add a Google-style docstring to #selection`
@@ -359,11 +354,9 @@ Inline review focuses on the specific changes, while chat-based allows broader c
 ---
 
 ### **Part F: Generating Alternative Implementation Suggestions**
-
 **Scenario**: A developer implemented a solution, but you want to explore if there are better alternatives.
 
 1. **Review original implementation**: Open `server/app.py`, select the `get_dogs` route
-
 2. **Request alternatives**: Create a New Chat and prompt:
    ```
    Review #selection and generate 3 alternative implementations with different 

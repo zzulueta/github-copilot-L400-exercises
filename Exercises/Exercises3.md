@@ -32,7 +32,7 @@ This comprehensive set of exercises guides you through establishing lightweight 
    - Frontend: http://localhost:4321
    - Backend: http://localhost:5100/api/dogs
 
-### Part C: Verify Organizational Standards Exist
+### Part C: Setup Basic Organizational Standards
 1. Copy the  `.github/copilot-instructions.md` from exercises repository to the `.github/` folder in your cloned repository
 2. Copy the `code-review-checklist.md` from exercises repository to the root directory in your cloned repository
 3. Copy the `pull-request-template.md` from exercises repository to the root directory in your cloned repository
