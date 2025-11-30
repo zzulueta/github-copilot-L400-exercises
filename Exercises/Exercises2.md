@@ -31,8 +31,8 @@ This comprehensive set of exercises guides you through mastering code review wor
    - Backend: http://localhost:5100/api/dogs
 
 ### Part C: Setup Basic Organizational Standards
-1. Copy the  `.github/copilot-instructions.md` from exercises repository to the `.github/` folder in your cloned repository
-1. Copy the  `.copilot-commit-message-instructions.md` from exercises repository to the `root` folder in your cloned repository
+1. Copy the  `.github/copilot-instructions.md` from exercises repository (found in the instructions folder) to the `.github/` folder in your cloned repository
+2. Copy the  `.copilot-commit-message-instructions.md` from exercises repository (found in the instructions folder) to the `root` folder in your cloned repository
 ---
 
 ## **Exercise 1: Foundation - Understanding Code Review Context**
