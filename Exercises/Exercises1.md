@@ -216,7 +216,7 @@ Create an API endpoint: `GET /api/dogs/<id>/human-age`
 3. Select the first step in the plan which is to modify `server/app.py`
 4. Prompt: `Implement the steps in #selection  one by one in #file:app.py. Place it at the bottom of the file`
 5. Review the generated code for the new endpoint and accept. Close app.py.
-6. Select the step in the plan to modify `src/components/DogList.svelte`.
+6. Select the step in the plan to modify `client/src/components/DogList.svelte`.
 7. Prompt: `Implement the steps in #selection one by one in #file:DogList.svelte.`
 8. Review the generated code for the new endpoint and accept.
 

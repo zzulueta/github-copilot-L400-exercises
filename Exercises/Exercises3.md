@@ -33,16 +33,35 @@ This comprehensive set of exercises guides you through establishing lightweight 
    - Backend: http://localhost:5100/api/dogs
 
 ### Part C: Setup Basic Organizational Standards
-1. Copy the  `.github/copilot-instructions.md` from exercises repository (found in the instructions folder)to the `.github/` folder in your cloned repository
+1. Copy the  `copilot-instructions.md` from exercises repository (found in the instructions folder)to the `.github/` folder in your cloned repository
 2. Copy the `code-review-checklist.md` from exercises repository (found in the templates folder) to the root directory in your cloned repository
-3. Copy the `pull-request-template.md` from exercises repository (found in the templates folder) to the root directory in your cloned repository
+3. Copy the `.copilot-pull-request-description-instructions.md` from exercises repository (found in the templates folder) to the root directory in your cloned repository
 
 ### Part D: Create Governance Documentation Folder
 1. Create folder structure: `docs/governance/`
 2. Create folder: `docs/api/`
 3. Create folder: `docs/architecture/`
 4. Create folder: `docs/governance/mcp-reports/`
-5. This structure will hold governance artifacts generated during exercises
+5. Create folder: `docs/governance/templates/`
+6. Create folder: `docs/governance/decisions/`
+7. Create folder: `docs/governance/audit-trail/`
+8. Create folder: `docs/governance/change-proposals/`
+9. Create folder: `docs/governance/retrospectives/`
+10. Create folder: `docs/reviews/`
+11. Create folder: `docs/pr-summaries/`
+12. Create folder: `docs/changelog/`
+13. Create folder: `docs/knowledge-base/`
+14. This structure will hold governance artifacts generated during exercises
+
+### Part E: Analyze Existing Project Standards and Getting Started with a Project
+[OPTIONAL] If you have attended previous exercises, you can skip this part.
+1. Explore the workspace structure
+2. Perform the prompt:
+    - Ask: `@workspace What coding patterns and conventions are used in this project?`
+    - Identify Python (Flask/SQLAlchemy) and Svelte/Astro patterns
+3. Ask: `@workspace How to run this application?`
+4. Review setup instructions and dependencies
+5. Ask: `@workspace What are the main components and their interactions in this application?`
 
 ---
 
@@ -148,7 +167,7 @@ This comprehensive set of exercises guides you through establishing lightweight 
    - How to respond to feedback
    - When to merge
    
-   Reference #file:code-review-checklist.md and #file:pull-request-template.md
+   Reference #file:code-review-checklist.md and #file:.copilot-pull-request-description-instructions.md
    ```
 3. Save to: `docs/governance/review-governance.md`
 4. **Reflection**:
@@ -636,7 +655,7 @@ def adopt_dog(dog_id: int) -> Response | tuple[Response, int]:
 4. Prompt:
    ```
    Generate a comprehensive PR summary for #file:feature-pr.diff 
-   following #file:pull-request-template.md
+   following #file:.copilot-pull-request-description-instructions.md
    
    Fill in all sections with specific details from the diff.
    
@@ -1074,7 +1093,7 @@ Each finding must include:
 2. Create a new Chat in Agent and add the pr-summaries folder as context:
    ```
    Generate a comprehensive PR summary for #file:refactor-pr.diff 
-   following #file:pull-request-template.md
+   following #file:.copilot-pull-request-description-instructions.md
    
    Fill in all sections with specific details from the diff.
    
@@ -1493,7 +1512,7 @@ After completing these exercises, consider:
 - `Generate knowledge base article for [feature name]`
 
 ### PR Management
-- `Generate comprehensive PR description using #file:pull-request-template.md based on #file:pr-changes.diff`
+- `Generate comprehensive PR description using #file:.copilot-pull-request-description-instructions.md based on #file:pr-changes.diff`
 - `Create decision log for the changes in #file:feature-pr.diff`
 - `Extract reusable knowledge from merged PR`
 

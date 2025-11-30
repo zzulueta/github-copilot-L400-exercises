@@ -1,6 +1,6 @@
 ---
 description: "Focused Security Reviewer – orchestrates security analysis using supplemental rule files."
-tools: ["search", "problems", "fetch", "githubRepo"]
+tools: ["search", "problems", "fetch", "githubRepo", "edit"]
 model: Claude Sonnet 4.5
 ---
 # Focused Security Reviewer Agent

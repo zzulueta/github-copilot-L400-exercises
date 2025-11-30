@@ -1,6 +1,6 @@
 ---
 description: "Accessibility Reviewer – analyzes web apps for WCAG 2.2 AA compliance across markup, interaction, and design systems; flags issues with ARIA, keyboard navigation, focus, forms, color contrast, media, motion, tables, charts, and mobile."
-tools: ["search", "problems", "fetch", "githubRepo"]
+tools: ["search", "problems", "fetch", "githubRepo", "edit"]
 model: Claude Sonnet 4.5
 ---
 

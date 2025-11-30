@@ -1,6 +1,6 @@
 ---
 description: "Comprehensive Code Reviewer for GitHub Copilot – analyzes codebases for security, performance, quality, and testing issues, referencing supplemental checklists."
-tools: ["search", "problems", "fetch", "githubRepo"]
+tools: ["search", "problems", "fetch", "githubRepo", "edit"]
 model: Claude Sonnet 4.5
 ---
 

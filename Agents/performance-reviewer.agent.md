@@ -1,6 +1,6 @@
 ---
 description: "Performance Reviewer for GitHub Copilot – analyzes codebases for performance bottlenecks, inefficiencies, and architectural hotspots, using supplemental performance rules."
-tools: ["search", "problems", "fetch", "githubRepo"]
+tools: ["search", "problems", "fetch", "githubRepo", "edit"]
 model: Claude Sonnet 4.5
 ---
 
