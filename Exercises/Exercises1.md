@@ -27,8 +27,10 @@ Apply Copilot for inline documentation, test coverage, and clean commit hygiene.
 
 ### Part A: Analyze Existing Project Standards and Getting Started with a Project
 1. Explore the workspace structure
-2. Perform the prompt using a free model such as GPT-5 mini vs. a premium model such as Claude Sonnet 4 or 4.5
-    - Ask: `@workspace What coding patterns and conventions are used in this project?`
+2. Perform the following prompts using a free model such as GPT-5 mini vs. a premium model such as Claude Sonnet 4 or 4.5
+    - Ask: `@workspace What is the main purpose of this application? What does it do?`
+    - Ask: `@workspace Can you give me a high-level overview of this project's features and functionality?`
+    - Ask: `@workspace What type of application is this? Is it a web app, API, desktop app, or something else?`
     - Notice the length and detailed response between the two models.
     - Identify Python (Flask/SQLAlchemy) and Svelte/Astro patterns
 3. Ask: `@workspace How to run this application?`
@@ -38,6 +40,17 @@ Apply Copilot for inline documentation, test coverage, and clean commit hygiene.
 5. See if the following are loaded and working:
     - Frontend (Astro/Svelte): http://localhost:4321
     - Backend (Dogs API endpoint): http://localhost:5100/api/dogs
+6. You may want to understand the project structure further by asking:
+    - Ask: `@workspace How is this project structured? Can you explain the main folders and their purposes?`
+    - Ask: `@workspace What are the most important files I should understand as a new developer on this project?`
+    - Ask: `@workspace Are there any configuration files I should be aware of? What do they control?`
+    - Ask: `@workspace What database is used in this project and how is it accessed?`
+    - Ask: `@workspace How does the frontend communicate with the backend API?`
+    - Ask: `@workspace What testing frameworks are used in this project?`
+7. You may also want to identify the technologies and frameworks used:
+    - Ask: `@workspace What programming languages are used in this project?`
+    - Ask: `@workspace What frameworks and libraries does this project depend on? Can you explain what each major one does?`
+    - Ask: `@workspace What's the package.json/requirements.txt/build.gradle telling me about the dependencies?`
 
 ### Part B: Create Organizational Instructions
 1. Open server/app.py. Prompt in Ask:
