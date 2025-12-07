@@ -1,0 +1,108 @@
+Create a the project in the Downloads folder using the following specs below:
+
+# Tailspin Shelter - Dog Adoption Application
+
+Create a full-stack dog adoption web application called "Tailspin Shelter" (located in Seattle) with the following specifications:
+
+## Project Structure
+
+```
+project-root/
+├── client/          # Frontend application
+├── server/          # Backend API
+├── scripts/         # Startup scripts
+└── tests/           # End-to-end tests
+```
+
+## Backend (server/ - Flask + Python)
+
+- Create a REST API using Flask with the following endpoints:
+  - GET /api/dogs - returns all dogs
+  - GET /api/dogs/<id> - returns a specific dog by ID
+- Use SQLAlchemy ORM with SQLite database
+- Create two models in server/models/: Dog and Breed with a relationship (many dogs to one breed)
+- Dog model should have: id, name, breed_id, age, gender, color, image_url, description, adoption_status
+- Breed model should have: id, name, description, temperament, energy_level
+- Seed the database with at least 20 breeds and 100 dogs using CSV files (breeds.csv, dogs.csv)
+- Enable CORS for the frontend
+- Run on port 5100
+
+## Frontend (client/ - Astro + Svelte + Tailwind CSS)
+
+- Create an Astro static site with Svelte integration
+- Use Tailwind CSS for styling with global styles in client/src/styles/
+- Create pages in client/src/pages/:
+  - index.astro - Home page displaying a grid of all available dogs
+  - dog/[id].astro - Dog detail page showing full information
+  - about.astro - Information about the shelter
+- Create Svelte components in client/src/components/
+- Create reusable layouts in client/src/layouts/
+- Fetch data from the Flask API endpoints
+- Run on port 4321
+
+## UI/UX Design Specifications
+
+### Color Scheme
+- Primary color: Purple (#7c3aed / violet-600)
+- Secondary color: Light purple (#8b5cf6 / violet-500)
+- Background: Light gray (#f3f4f6 / gray-100)
+- Cards: White with subtle shadows
+- Text: Dark gray (#1f2937 / gray-800)
+
+### Navigation Header
+- Fixed header with purple gradient background
+- Logo/site name "Tailspin Shelter" on the left
+- Navigation links (Home, About) on the right
+- White text with hover effects
+
+### Home Page
+- Hero section with welcome message and shelter tagline
+- Search/filter bar to filter dogs by breed, age, or adoption status
+- Responsive grid of dog cards (3 columns on desktop, 2 on tablet, 1 on mobile)
+- Each dog card should display:
+  - Dog image (placeholder if not available)
+  - Dog name
+  - Breed name
+  - Age and gender
+  - Adoption status badge (Available/Adopted)
+  - "View Details" button
+
+### Dog Detail Page
+- Large dog image at the top
+- Dog name as page title
+- Information cards displaying:
+  - Breed, age, gender, color
+  - Detailed description
+  - Temperament and energy level (from breed)
+  - Adoption status with prominent badge
+- "Back to all dogs" navigation link
+- "Adopt Me" call-to-action button (if available)
+
+### About Page
+- Hero section with shelter mission statement
+- Information about the shelter's history
+- Contact information and location (Seattle)
+- Team/volunteer section (optional)
+
+### General Styling
+- Rounded corners on cards and buttons (rounded-lg)
+- Subtle box shadows on cards
+- Smooth hover transitions on interactive elements
+- Consistent spacing using Tailwind's spacing scale
+- Responsive design for all screen sizes
+- Loading states for data fetching
+
+## Scripts (scripts/)
+
+- start-app.ps1 - PowerShell script to start both client and server
+- start-app.sh - Bash script to start both client and server
+
+## Tests (tests/)
+
+- Add Playwright end-to-end tests covering homepage, dog details, and about page
+
+## Additional Requirements
+
+- Include a README.md with setup and running instructions
+- Include requirements.txt for Python dependencies
+- Include package.json for Node dependencies
